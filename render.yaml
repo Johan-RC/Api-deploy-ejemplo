@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: api-django
+    runtime: python
+    rootDir: Api-Django
+    buildCommand: pip install -r requirements.txt && python manage.py migrate --noinput
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
