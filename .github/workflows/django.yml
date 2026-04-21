@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Trigger Render Deploy (Django)
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_DJANGO }}"
