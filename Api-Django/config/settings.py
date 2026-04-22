@@ -4,13 +4,20 @@ Django settings for config project.
 
 from pathlib import Path
 import os
+from django.core.management.utils import get_random_secret_key
 from .db import get_database_config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Get SECRET_KEY from environment or generate a random one for development
 SECRET_KEY = os.getenv('SECRET_KEY')
 if not SECRET_KEY:
-    raise ValueError("SECRET_KEY environment variable is not set")
+    # Auto-generate SECRET_KEY for development/testing environments
+    SECRET_KEY = get_random_secret_key()
+    if os.getenv('DEBUG', 'False').lower() != 'true':
+        # In production (DEBUG=False), SECRET_KEY should be explicitly set
+        import warnings
+        warnings.warn("SECRET_KEY not set. Using auto-generated key. Set SECRET_KEY environment variable for production.", RuntimeWarning)
 
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
